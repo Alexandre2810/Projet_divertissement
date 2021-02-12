@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <title>CHIFFRE CESAR</title>
+    </head>
+    <body>
+        <main>
+            <!-- <img src="pixel.jpg.jpg" alt="pix"  > -->
+        <header>
+            <!-- BARRE DE NAVIGATION -->
+            <nav class="navigation">
+                <a class="nav_txt" href="index.html">Home</a>
+            </nav>
+        </header>
+        <div class="container_game">
+            <h1>Chiffre cesar</h1>
+        <p>message a chiffrer :</p>
+        <textarea id="message1" cols="30" rows="10"></textarea>
+        <br>
+        decalage de:<input id="clef" type="text" value="3">
+            <button type="button" id="button_chiffrage">chiffrer</button>
+            <button type="button" id="button_dechiffrage">dechiffrage</button>
+        <p>Message chiffrer</p>
+            <textarea name="" id="message2" cols="30" rows="10"></textarea>
+        </div>
+        <script>
+              var clef;
+            var message1;
+            var message2;
+            
+
+            var event = function(){
+                clef = document.getElementById("clef");
+                message1 = document.getElementById("message1");
+                message2 = document.getElementById("message2");
+                console.log(message2)
+                var button_chiffrer = document.getElementById("button_chiffrage");
+                var button_dechiffrer = document.getElementById("button_dechiffrage"); 
+                
+                /* faire interagire avec le button */
+                button_chiffrer.addEventListener("click", actualiser_message2_chiffrer );
+                button_dechiffrer.addEventListener("click", actualiser_message2_dechiffrer);
+            }
+
+            window.addEventListener("load", event);
+
+            var actualiser_message2_chiffrer = function()
+            {
+                var nombre_clef = parseFloat(clef.value);
+                var message_un = message1.value;
+                var on_chiffre = chiffrer(message_un, nombre_clef);
+                message2.innerHTML = on_chiffre;
+            }
+
+            var actualiser_message2_dechiffrer = function(){
+                var nombre_clef = parseFloat(clef.value);
+                var message_2 = message2.value;
+                var on_chiffre = dechiffrer(message_2,nombre_clef);
+                message2.innerHTML = on_chiffre;
+
+            }
+
+            var chiffrer = function(message1,clef){
+                var message2 = "";
+                var taille = message1.length;
+                for(var i = 0; i < taille; i++)
+                {
+                    var message_un_caratere = message1.charCodeAt(i);
+                    if(message_un_caratere >= 97 && message_un_caratere <= 122)
+                    {
+                        message2 += String.fromCharCode((message_un_caratere - 97 + clef) % 26 + 97);
+                    }
+                    else if(message_un_caratere >= 65 && message_un_caratere <= 90)
+                    {
+                        message2 += String.fromCharCode((message_un_caratere - 65 + clef) % 26 + 65);
+                    }
+                    else
+                    {
+                        message2 += String.fromCharCode(message_un_caratere);
+                    }
+                }
+                return message2;
+            }
+
+            var dechiffrer = function(message1,clef){
+                var message2 = "";
+                var taille = message1.length;
+                for(var i = 0; i < taille; i++)
+                {
+                    var message_2_caratere = message1.charCodeAt(i);
+                    if(message_2_caratere >= 97 && message_2_caratere <= 122)
+                    {
+                        message2 += String.fromCharCode((message_2_caratere - 97 - clef +26) % 26 + 97);
+                    }
+                    else if(message_2_caratere >= 65 && message_2_caratere <= 90)
+                    {
+                        message2 += String.fromCharCode((message_2_caratere - 65 - clef +26) % 26 + 65);
+                    }
+                    else
+                    {
+                        message2 += String.fromCharCode(message_2_caratere);
+                    }
+                }
+                return message2;
+            }
+        </script>
+    </body>
+</html>

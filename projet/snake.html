@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <title>SNAKE</title>
+    </head>
+    <body>
+        <main>
+            <!-- <img src="pixel.jpg.jpg" alt="pix"  > -->
+        <header>
+            <!-- BARRE DE NAVIGATION -->
+            <nav class="navigation">
+                <a class="nav_txt" href="index.html">Home</a>
+            </nav>
+        </header>
+        <!-- SOUS LA BARRE DE NAV -->
+        <h1>snake</h1>
+        <div class="snake">
+            <canvas id="canv" width="400" height="400"></canvas>
+        </div>
+        <script>
+        /* au lancement de de la page */ 
+        window.onload=function() {
+            canv = document.getElementById("canv");
+            ctx = canv.getContext("2d");
+            document.addEventListener("keydown",keyPush);
+            setInterval(game,1000/15);
+        }
+            
+
+        snakeX = snakeY = 10;
+        pommeX = pommeY = 15;
+        axeX = axeY = 0;
+        grillX = grillY = 20; 
+        snake = [];
+        taille = 5;
+
+        function game(){
+            snakeX += axeX;
+            snakeY += axeY;
+
+            if(snakeX < 0){
+                snakeX = grillY - 1;
+            }
+            if(snakeX > grillY -1){
+                snakeX = 0;
+            }
+            if(snakeY < 0){
+                snakeY = grillY - 1;
+            }
+            if(snakeY > grillY -1){
+                snakeY = 0;
+            }
+             
+
+            /* Background */
+            ctx.fillStyle = "black";
+            ctx.fillRect(0,0,canv.width,canv.height);
+
+            /* snake */
+            ctx.fillStyle = "lime";          
+            for(var i = 0; i < snake.length; i++){
+                
+                ctx.fillRect(snake[i].x*grillY, snake[i].y*grillY, grillY-2,grillY-2);               
+                if(snake[i].x == snakeX && snake[i].y == snakeY){
+                    taille = 5;
+                }
+            }
+
+            snake.push({x:snakeX,y:snakeY});
+            
+            while(snake.length > taille){
+                snake.shift();
+            }
+            /* conditions manger la pomme */     
+            if(pommeX==snakeX && pommeY==snakeY) {
+                taille++;
+                pommeX=Math.floor(Math.random()*grillY);
+                pommeY=Math.floor(Math.random()*grillY);
+            }
+
+            ctx.fillStyle="red";
+            ctx.fillRect(pommeX*grillY,pommeY*grillY,grillY-2,grillY-2);
+        }
+
+        /* mouvement avec les fleches */ 
+        function keyPush(e) {
+        
+            switch(e.keyCode) {
+                case 37:
+                    console.log()
+                    axeX = -1; axeY = 0;
+                    break;
+                
+                case 38:
+                    axeX = 0; axeY = -1;
+                    break;
+                
+                case 39:
+                    axeX = 1; axeY = 0;
+                    break;
+
+                case 40:
+                    axeX = 0; axeY = 1;
+                    break;
+            }
+        }
+        
+        </script>
+    </body>
+</html>

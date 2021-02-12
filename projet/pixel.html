@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <title>PIXEL DRAWER</title>
+    </head>
+    <body>
+        <main>
+            <!-- <img src="pixel.jpg.jpg" alt="pix"  > -->
+        <header>
+            <!-- BARRE DE NAVIGATION -->
+            <nav class="navigation">
+                <a class="nav_txt" href="index.html">Home</a>
+            </nav>
+        </header>
+       <div class="app">
+           <div class="color">
+               <label for="pen-colo">color</label>
+               <input oninput = "draw_color = this.value" type="color" id="pen-color" value="#000">
+               <button onclick="clear_bg_color" type="button" class="button">CLEAR</button>
+           </div>
+          
+       </div>
+       <canvas id="canv" width="650" height="600"></canvas>
+
+       <script>
+           var canv = document.getElementById("canv");
+            ctx = canv.getContext("2d");
+            var bg_color = "white";
+            ctx.fillStyle = bg_color;
+            ctx.fillRect(0,0,canv.width,canv.height);
+
+            var draw_color = "black";
+            var draw_width = "2";
+            var is_drawing = false;
+
+            /* event click souris */
+            canv.addEventListener("mousedown", start, false);
+            canv.addEventListener("mousemove", draw, false);
+            canv.addEventListener("mouseup", stop, false);
+            canv.addEventListener("mouseout", stop, false);
+
+            function start(event){
+                is_drawing = true;
+                ctx.beginPath();
+                ctx.moveTo(event.clientX - canv.offsetLeft,
+                            event.clientY - canv.offsetTop);
+                event.preventDefault(); 
+            }
+            /* permet de dessiner */
+            function draw(event){
+                if(is_drawing){
+                    ctx.lineTo(event.clientX - canv.offsetLeft,
+                                event.clientY - canv.offsetTop);
+                    ctx.strokeStyle = draw_color;
+                    ctx.lineWidth = draw_width;
+                    ctx.lineCap = "round";
+                    ctx.lineJoin = "round";
+                    ctx.stroke();
+                }
+                event.preventDefault(); 
+            } 
+
+            /* stop le mouvement souris */
+            function stop(event){
+                if(is_drawing){
+                    ctx.stroke();
+                    ctx.closePath();
+                    is_drawing = false;
+                }
+                event.preventDefault();
+            }
+
+            /* clear fenetre canvas */ 
+            function clear_bg_color(){
+                ctx.fillStyle = bg_color;
+                ctx.clearRect(0,0,canv.width,canv.height);
+                ctx.fillRect(0,0,canv.width,canv.height);
+            }
+       </script>
+    </body>
+</html>
